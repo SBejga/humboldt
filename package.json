@@ -1,0 +1,17 @@
+{
+  "name": "humboldt",
+  "version": "1.0.0",
+  "description": "some common tools for map, coordinates and co",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "run": "ts-node ./src/index.ts",
+    "prepublishOnly": "tsc -p ./ --outDir dist/"
+  },
+  "author": "Sebastian Bejga",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "ts-node": "^3.1.0",
+    "typescript": "^2.3.4"
+  }
+}
