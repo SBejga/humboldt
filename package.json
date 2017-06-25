@@ -1,16 +1,19 @@
 {
   "name": "humboldt",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "some common tools for map, coordinates and co",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "run": "ts-node ./src/index.ts",
-    "prepublishOnly": "tsc -p ./ --outDir dist/"
+    "clean:dist": "rimraf dist/*",
+    "prepublishOnly": "npm run clean:dist && tsc -p ./ --outDir dist/"
   },
   "author": "Sebastian Bejga",
   "license": "Apache-2.0",
   "dependencies": {
+    "rimraf": "^2.6.1"
+  },
+  "devDependencies": {
     "ts-node": "^3.1.0",
     "typescript": "^2.3.4"
   }
