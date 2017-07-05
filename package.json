@@ -1,6 +1,6 @@
 {
   "name": "humboldt",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "some common tools for map, coordinates and co",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
