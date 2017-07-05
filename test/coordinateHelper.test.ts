@@ -23,10 +23,21 @@ describe('DegreeMinutes', () => {
             chai.expect(CoordinateHelper.validateDegreeMinute(DM_clean)).to.be.true;
         });
         it(`${DD_Munich.lat}, ${DD_Munich.lng}`, () => {
+            //from DM to LatLng
             let dmToLatLng = CoordinateHelper.coordinateDmToLatLng(DM_Munich) as LatLng; //exclude null
             chai.expect(dmToLatLng).to.be.not.null;
             chai.expect(dmToLatLng.lat).to.equal(DD_Munich.lat);
             chai.expect(dmToLatLng.lng).to.equal(DD_Munich.lng);
+
+            //from LatLng back to DM
+            let backToDm = CoordinateHelper.coordinateLatLngToDm(DD_Munich);
+            chai.expect(backToDm).to.be.not.null;
+            chai.expect(backToDm.lat_direction).to.equal("N");
+            chai.expect(backToDm.lat_degree).to.equal(48);
+            chai.expect(backToDm.lat_minutes).to.equal(8.233);
+            chai.expect(backToDm.lng_direction).to.equal("E");
+            chai.expect(backToDm.lng_degree).to.equal(11);
+            chai.expect(backToDm.lng_minutes).to.equal(34.533);
         })
     });
 
@@ -46,9 +57,20 @@ describe('DegreeMinutes', () => {
             chai.expect(CoordinateHelper.validateDegreeMinute(DM_clean)).to.be.true;
         });
         it(`${DD_Rio.lat}, ${DD_Rio.lng}`, () => {
+            //from DM to LatLng
             let dmToLatLng = CoordinateHelper.coordinateDmToLatLng(DM_Rio) as LatLng; //exclude null
             chai.expect(dmToLatLng.lat).to.equal(DD_Rio.lat);
             chai.expect(dmToLatLng.lng).to.equal(DD_Rio.lng);
+
+            //from LatLng back to DM
+            let backToDm = CoordinateHelper.coordinateLatLngToDm(DD_Rio);
+            chai.expect(backToDm).to.be.not.null;
+            chai.expect(backToDm.lat_direction).to.equal("S");
+            chai.expect(backToDm.lat_degree).to.equal(22);
+            chai.expect(backToDm.lat_minutes).to.equal(54.500);
+            chai.expect(backToDm.lng_direction).to.equal("W");
+            chai.expect(backToDm.lng_degree).to.equal(43);
+            chai.expect(backToDm.lng_minutes).to.equal(11.783);
         })
     });
 

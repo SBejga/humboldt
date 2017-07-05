@@ -95,4 +95,32 @@ export class CoordinateHelper {
             lng: Number(lng.toFixed(6))
         }
     }
+
+    static coordinateLatLngToDm(latlng: LatLng) : DegreeMinute {
+        //get N/S by +/- of lat, E/W by +/- of lng
+        let latHeading = latlng.lat >= 0 ? "N" : "S";
+        let lngHeading = latlng.lng >= 0 ? "E" : "W";
+
+        //get integer without float and ignore negative
+        let latDegree = Math.floor(Math.abs(latlng.lat));
+        let lngDegree = Math.floor(Math.abs(latlng.lng));
+
+        //calc minutes
+        let latMinutes = 60 * (Math.abs(latlng.lat) - latDegree);
+        let lngMinutes = 60 * (Math.abs(latlng.lng) - lngDegree);
+
+        //max 3 float digits of minutes
+        let latMinutesFixed = Number(latMinutes.toFixed(3));
+        let lngMinutesFixed = Number(lngMinutes.toFixed(3));
+
+        let resultDegreeMinute : DegreeMinute= {
+            lat_direction: latHeading,
+            lat_degree: latDegree,
+            lat_minutes: latMinutesFixed,
+            lng_direction: lngHeading,
+            lng_degree: lngDegree,
+            lng_minutes: lngMinutesFixed
+        }
+        return resultDegreeMinute;
+    }
 }

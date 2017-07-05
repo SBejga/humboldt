@@ -40,12 +40,8 @@ Convert degrees and minutes to decimal degrees
 		"N 48° 08.233' E 011° 34.533'" 
 		=> 
 			{
-				lat_direction: "N",
-				lat_degree: 48,
-				lat_minutes: 8.233,
-				lng_direction: "E",
-				lng_degree: 11,
-				lng_minutes: 34.533
+				lat_direction: "N", lat_degree: 48, lat_minutes: 8.233,
+				lng_direction: "E", lng_degree: 11, lng_minutes: 34.533
 			}
 	*/
 	static parseDegreeMinute(coordinate: string) : DegreeMinute | null
@@ -60,3 +56,12 @@ Convert degrees and minutes to decimal degrees
 	*/
 	static coordinateDmToLatLng(coordinate: string): LatLng | null
 
+	/*
+		{ lat: 48.137217, lng: 11.575550 } 
+		=> 
+			{
+				lat_direction: "N", lat_degree: 48, lat_minutes: 8.233,
+				lng_direction: "E", lng_degree: 11, lng_minutes: 34.533
+			}
+	*/
+	static coordinateLatLngToDm(latlng: LatLng) : DegreeMinute
