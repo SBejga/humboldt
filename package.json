@@ -11,9 +11,9 @@
   "author": "Sebastian Bejga",
   "license": "Apache-2.0",
   "dependencies": {
-    "rimraf": "^2.6.1"
   },
   "devDependencies": {
+    "rimraf": "^2.6.1",
     "ts-node": "^3.1.0",
     "typescript": "^2.3.4"
   }
