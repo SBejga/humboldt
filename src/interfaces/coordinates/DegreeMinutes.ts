@@ -1,5 +1,3 @@
-export type Hemisphere = "N" | "S" | "E" | "W";
-
 export interface DegreeMinutes {
     latitude: {
         hemisphere: "N" | "S" | string,

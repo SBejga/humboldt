@@ -1,0 +1,1 @@
+export type Hemisphere = "N" | "S" | "E" | "W";
