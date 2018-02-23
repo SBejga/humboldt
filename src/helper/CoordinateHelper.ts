@@ -86,9 +86,20 @@ export class CoordinateHelper {
     }
 
     static coordinateDmToLatLng(dm: DegreeMinutes): LatLng {
+        let latlng = {
+            lat: {
+                degree: Number(dm.latitude.degree),
+                minutes: Number(dm.latitude.minutes),
+            },
+            lon: {
+                degree: Number(dm.longitude.degree),
+                minutes: Number(dm.longitude.minutes),
+            }
+        }
+
         //Calculate to DDD.DDDDDD
-        let lat = dm.latitude.degree + dm.latitude.minutes / 60;
-        let lng = dm.longitude.degree + dm.longitude.minutes / 60;
+        let lat = latlng.lat.degree + latlng.lat.minutes / 60;
+        let lng = latlng.lon.degree + latlng.lon.minutes / 60;
 
         //change to negative if S or W
         if (dm.latitude.hemisphere === "S") {
