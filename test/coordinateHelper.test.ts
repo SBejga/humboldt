@@ -11,7 +11,7 @@ describe('DegreeMinutes', () => {
         let DM_Munich = "N 48° 08.233' E 011° 34.533'";
         let DM_Munich_noLeadingZero = "N 48° 8.233' E 11° 34.533'";
         let DM_clean = DM_Munich.replace(/°/g, "").replace(/'/g, "");
-        let DD_Munich = {lat: 48.137217, lng: 11.575550}
+        let DD_Munich = {latitude: 48.137217, longitude: 11.575550}
 
         it(DM_Munich, () => {
             chai.expect(CoordinateHelper.validateDegreeMinute(DM_Munich)).to.be.true;
@@ -22,12 +22,12 @@ describe('DegreeMinutes', () => {
         it(DM_clean, () => {
             chai.expect(CoordinateHelper.validateDegreeMinute(DM_clean)).to.be.true;
         });
-        it(`${DD_Munich.lat}, ${DD_Munich.lng}`, () => {
+        it(`${DD_Munich.latitude}, ${DD_Munich.longitude}`, () => {
             //from DM to LatLng
-            let dmToLatLng = CoordinateHelper.coordinateDmToLatLng(DM_Munich) as LatLng; //exclude null
+            let dmToLatLng = CoordinateHelper.coordinateDmStringToLatLng(DM_Munich) as LatLng; //exclude null
             chai.expect(dmToLatLng).to.be.not.null;
-            chai.expect(dmToLatLng.lat).to.equal(DD_Munich.lat);
-            chai.expect(dmToLatLng.lng).to.equal(DD_Munich.lng);
+            chai.expect(dmToLatLng.latitude).to.equal(DD_Munich.latitude);
+            chai.expect(dmToLatLng.longitude).to.equal(DD_Munich.longitude);
 
             //from LatLng back to DM
             let backToDm = CoordinateHelper.coordinateLatLngToDm(DD_Munich);
@@ -45,7 +45,7 @@ describe('DegreeMinutes', () => {
         let DM_Rio = "S 22° 54.500' W 043° 11.783''";
         let DM_Rio_noLeadingZero = "S 22° 54.500' W 43° 011.783''";
         let DM_clean = DM_Rio.replace(/°/g, "").replace(/'/g, "");
-        let DD_Rio = {lat: -22.908333, lng: -43.196383};
+        let DD_Rio = {latitude: -22.908333, longitude: -43.196383};
 
         it(DM_Rio, () => {
             chai.expect(CoordinateHelper.validateDegreeMinute(DM_Rio)).to.be.true;
@@ -56,11 +56,11 @@ describe('DegreeMinutes', () => {
         it(DM_clean, () => {
             chai.expect(CoordinateHelper.validateDegreeMinute(DM_clean)).to.be.true;
         });
-        it(`${DD_Rio.lat}, ${DD_Rio.lng}`, () => {
+        it(`${DD_Rio.latitude}, ${DD_Rio.longitude}`, () => {
             //from DM to LatLng
-            let dmToLatLng = CoordinateHelper.coordinateDmToLatLng(DM_Rio) as LatLng; //exclude null
-            chai.expect(dmToLatLng.lat).to.equal(DD_Rio.lat);
-            chai.expect(dmToLatLng.lng).to.equal(DD_Rio.lng);
+            let dmToLatLng = CoordinateHelper.coordinateDmStringToLatLng(DM_Rio) as LatLng; //exclude null
+            chai.expect(dmToLatLng.latitude).to.equal(DD_Rio.latitude);
+            chai.expect(dmToLatLng.longitude).to.equal(DD_Rio.longitude);
 
             //from LatLng back to DM
             let backToDm = CoordinateHelper.coordinateLatLngToDm(DD_Rio);
