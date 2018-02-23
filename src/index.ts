@@ -1,6 +1,6 @@
 export * from "./interfaces/humboldtMarker"
 export * from "./interfaces/mapletMarker"
-export * from './interfaces/DegreeMinute';
-export * from './interfaces/LatLng';
+export * from "./interfaces/coordinates/DegreeMinutes";
+export * from "./interfaces/coordinates/LatLng";
 
-export * from './helper/CoordinateHelper';
+export * from "./helper/CoordinateHelper";

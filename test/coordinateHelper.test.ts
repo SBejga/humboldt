@@ -1,4 +1,4 @@
-import { LatLng } from './../src/interfaces/LatLng';
+import { LatLng } from './../src/interfaces/coordinates/LatLng';
 import * as chai from "chai";
 import { CoordinateHelper } from './../src/helper/CoordinateHelper';
 
@@ -32,12 +32,12 @@ describe('DegreeMinutes', () => {
             //from LatLng back to DM
             let backToDm = CoordinateHelper.coordinateLatLngToDm(DD_Munich);
             chai.expect(backToDm).to.be.not.null;
-            chai.expect(backToDm.lat_direction).to.equal("N");
-            chai.expect(backToDm.lat_degree).to.equal(48);
-            chai.expect(backToDm.lat_minutes).to.equal(8.233);
-            chai.expect(backToDm.lng_direction).to.equal("E");
-            chai.expect(backToDm.lng_degree).to.equal(11);
-            chai.expect(backToDm.lng_minutes).to.equal(34.533);
+            chai.expect(backToDm.latitude.hemisphere).to.equal("N");
+            chai.expect(backToDm.latitude.degree).to.equal(48);
+            chai.expect(backToDm.latitude.minutes).to.equal(8.233);
+            chai.expect(backToDm.longitude.hemisphere).to.equal("E");
+            chai.expect(backToDm.longitude.degree).to.equal(11);
+            chai.expect(backToDm.longitude.minutes).to.equal(34.533);
         })
     });
 
@@ -65,12 +65,12 @@ describe('DegreeMinutes', () => {
             //from LatLng back to DM
             let backToDm = CoordinateHelper.coordinateLatLngToDm(DD_Rio);
             chai.expect(backToDm).to.be.not.null;
-            chai.expect(backToDm.lat_direction).to.equal("S");
-            chai.expect(backToDm.lat_degree).to.equal(22);
-            chai.expect(backToDm.lat_minutes).to.equal(54.500);
-            chai.expect(backToDm.lng_direction).to.equal("W");
-            chai.expect(backToDm.lng_degree).to.equal(43);
-            chai.expect(backToDm.lng_minutes).to.equal(11.783);
+            chai.expect(backToDm.latitude.hemisphere).to.equal("S");
+            chai.expect(backToDm.latitude.degree).to.equal(22);
+            chai.expect(backToDm.latitude.minutes).to.equal(54.500);
+            chai.expect(backToDm.longitude.hemisphere).to.equal("W");
+            chai.expect(backToDm.longitude.degree).to.equal(43);
+            chai.expect(backToDm.longitude.minutes).to.equal(11.783);
         })
     });
 

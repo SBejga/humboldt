@@ -1,11 +1,11 @@
-import { LatLng } from './../interfaces/LatLng';
-import { DegreeMinute } from './../interfaces/DegreeMinute';
+import { LatLng } from './../interfaces/coordinates/LatLng';
+import { DegreeMinutes } from './../interfaces/coordinates/DegreeMinutes';
 
 const DM_COORDINATE_REGEX = "([NS]) ([0-9]+)°? ([0-9]+\.[0-9]+)'? ([EW]) ([0-9]+)°? ([0-9]+\.[0-9]+)'?";
 
 export class CoordinateHelper {
 
-    static parseDegreeMinute(coordinate: string) : DegreeMinute | null {
+    static parseDegreeMinute(coordinate: string) : DegreeMinutes | null {
         let RE = new RegExp(DM_COORDINATE_REGEX, "g");
         let matchArray = RE.exec(coordinate);
         // console.log("matchArray", matchArray);
@@ -24,13 +24,17 @@ export class CoordinateHelper {
         let EW_D = Number(matchArray[5]);
         let EW_M = Number(matchArray[6]);
 
-        let newDegreeMinutes : DegreeMinute = {
-            lat_direction: NS,
-            lat_degree: NS_D,
-            lat_minutes: NS_M,
-            lng_direction: EW,
-            lng_degree: EW_D,
-            lng_minutes: EW_M
+        let newDegreeMinutes : DegreeMinutes = {
+            latitude: {
+                hemisphere: NS,
+                degree: NS_D,
+                minutes: NS_M
+            },
+            longitude: {
+                hemisphere: EW,
+                degree: EW_D,
+                minutes: EW_M
+            }
         }
         return newDegreeMinutes;
     }
@@ -44,26 +48,26 @@ export class CoordinateHelper {
         }
 
         // N, S, E or W
-        if (dm.lat_direction !== "N" && dm.lat_direction !== "S") {
+        if (dm.latitude.hemisphere !== "N" && dm.latitude.hemisphere !== "S") {
             return false;
         }
-        if (dm.lng_direction !== "E" && dm.lng_direction !== "W") {
+        if (dm.longitude.hemisphere !== "E" && dm.longitude.hemisphere !== "W") {
             return false;
         }
 
         //Degrees 0 <= x <= 90 or 180
-        if (dm.lat_degree < 0 || dm.lat_degree > 90) {
+        if (dm.latitude.degree < 0 || dm.latitude.degree > 90) {
             return false;
         }
-        if (dm.lng_degree < 0 || dm.lng_degree > 180) {
+        if (dm.longitude.degree < 0 || dm.longitude.degree > 180) {
             return false;
         }
 
         // Minutes 0.001 <= x <= 60.999
-        if (dm.lat_minutes < 0.001 || dm.lat_minutes > 60.999) {
+        if (dm.latitude.minutes < 0.001 || dm.latitude.minutes > 60.999) {
             return false;
         }
-        if (dm.lng_minutes < 0.001 || dm.lng_minutes > 60.999) {
+        if (dm.longitude.minutes < 0.001 || dm.longitude.minutes > 60.999) {
             return false;
         }
 
@@ -79,14 +83,14 @@ export class CoordinateHelper {
         }
 
         //Calculate to DDD.DDDDDD
-        let lat = dm.lat_degree + dm.lat_minutes / 60;
-        let lng = dm.lng_degree + dm.lng_minutes / 60;
+        let lat = dm.latitude.degree + dm.latitude.minutes / 60;
+        let lng = dm.longitude.degree + dm.longitude.minutes / 60;
 
         //change to negative if S or W
-        if (dm.lat_direction === "S") {
+        if (dm.latitude.hemisphere === "S") {
             lat *= -1;
         }
-        if (dm.lng_direction === "W") {
+        if (dm.longitude.hemisphere === "W") {
             lng *= -1;
         }
 
@@ -96,7 +100,7 @@ export class CoordinateHelper {
         }
     }
 
-    static coordinateLatLngToDm(latlng: LatLng) : DegreeMinute {
+    static coordinateLatLngToDm(latlng: LatLng) : DegreeMinutes {
         //get N/S by +/- of lat, E/W by +/- of lng
         let latHeading = latlng.lat >= 0 ? "N" : "S";
         let lngHeading = latlng.lng >= 0 ? "E" : "W";
@@ -113,13 +117,17 @@ export class CoordinateHelper {
         let latMinutesFixed = Number(latMinutes.toFixed(3));
         let lngMinutesFixed = Number(lngMinutes.toFixed(3));
 
-        let resultDegreeMinute : DegreeMinute= {
-            lat_direction: latHeading,
-            lat_degree: latDegree,
-            lat_minutes: latMinutesFixed,
-            lng_direction: lngHeading,
-            lng_degree: lngDegree,
-            lng_minutes: lngMinutesFixed
+        let resultDegreeMinute : DegreeMinutes = {
+            latitude: {
+                hemisphere: latHeading,
+                degree: latDegree,
+                minutes: latMinutesFixed
+            },
+            longitude: {
+                hemisphere: lngHeading,
+                degree: lngDegree,
+                minutes: lngMinutesFixed
+            }
         }
         return resultDegreeMinute;
     }
