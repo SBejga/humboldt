@@ -40,8 +40,16 @@ Convert degrees and minutes to decimal degrees
 		"N 48° 08.233' E 011° 34.533'" 
 		=> 
 			{
-				lat_direction: "N", lat_degree: 48, lat_minutes: 8.233,
-				lng_direction: "E", lng_degree: 11, lng_minutes: 34.533
+				latitude: {
+					hemisphere: "N",
+					degree: 48, 
+					minutes: 8.233
+				},
+				longitude: {
+					hemisphere: "E",
+					degree: 11, 
+					minutes: 34.533
+				}
 			}
 	*/
 	static parseDegreeMinute(coordinate: string) : DegreeMinute | null
@@ -52,16 +60,24 @@ Convert degrees and minutes to decimal degrees
 	static validateDegreeMinute(coordinate: string) : boolean
 
 	/*
-		"N 48° 08.233' E 011° 34.533'" => { lat: 48.137217, lng: 11.575550 } 
+		"N 48° 08.233' E 011° 34.533'" => { latitude: 48.137217, longitude: 11.575550 } 
 	*/
-	static coordinateDmToLatLng(coordinate: string): LatLng | null
+	static coordinateDmStringToLatLng(coordinate: string): LatLng | null
 
 	/*
-		{ lat: 48.137217, lng: 11.575550 } 
+		{ latitude: 48.137217, longitude: 11.575550 } 
 		=> 
 			{
-				lat_direction: "N", lat_degree: 48, lat_minutes: 8.233,
-				lng_direction: "E", lng_degree: 11, lng_minutes: 34.533
+				latitude: {
+					hemisphere: "N",
+					degree: 48, 
+					minutes: 8.233
+				},
+				longitude: {
+					hemisphere: "E",
+					degree: 11, 
+					minutes: 34.533
+				}
 			}
 	*/
 	static coordinateLatLngToDm(latlng: LatLng) : DegreeMinute
