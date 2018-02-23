@@ -6,3 +6,5 @@ export * from "./interfaces/coordinates/LatLng";
 export * from "./interfaces/coordinates/Utm";
 
 export * from "./helper/CoordinateHelper";
+
+export * from "./Coordinates";
