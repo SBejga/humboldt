@@ -1,7 +1,7 @@
 
 export interface Utm {
-    zone: number,
-    hemisphere: "N" | "S" | string,
+    zoneNumber: number,
+    zoneLetter: string,
     easting: number,
     northing: number
 }

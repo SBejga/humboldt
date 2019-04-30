@@ -11,27 +11,31 @@ export class Coordinates {
     dd: LatLng;
     dm: DegreeMinutes;
     // dms: DegreeMinuteSeconds;
-    // utm: Utm;
+    utm: Utm;
 
     static fromDD(dd: LatLng) {
         let coords = new Coordinates();
+        // Init dd
         coords.dd = dd;
 
         // Convert to DM
         coords.dm = CoordinateHelper.coordinateLatLngToDm(dd);
+        // Convert to UTM
+        coords.utm = CoordinateHelper.coordinateLatLngToUtm(dd);
 
-        // Return
         return coords;
     }
 
     static fromDM(dm: DegreeMinutes) {
         let coords = new Coordinates();
+        // Init DM
         coords.dm = dm;
 
         // Convert to DD
         coords.dd = CoordinateHelper.coordinateDmToLatLng(dm);
+        // Convert to UTM
+        coords.utm = CoordinateHelper.coordinateLatLngToUtm(coords.dd);
 
-        // Return
         return coords;
     }
 

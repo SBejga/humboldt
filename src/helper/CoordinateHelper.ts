@@ -1,5 +1,8 @@
 import { LatLng } from './../interfaces/coordinates/LatLng';
 import { DegreeMinutes } from './../interfaces/coordinates/DegreeMinutes';
+import { Utm as IUtm } from '../interfaces/coordinates/Utm';
+
+import * as UtmLib from 'utm';
 
 const DM_COORDINATE_REGEX = "([NS]) ([0-9]+)°? ([0-9]+\.[0-9]+)'? ([EW]) ([0-9]+)°? ([0-9]+\.[0-9]+)'?";
 
@@ -9,7 +12,7 @@ export class CoordinateHelper {
         let RE = new RegExp(DM_COORDINATE_REGEX, "g");
         let matchArray = RE.exec(coordinate);
         // console.log("matchArray", matchArray);
-        
+
         //should only found once
         if (!matchArray) {
             // console.log("dm coordinate not matched");
@@ -145,5 +148,22 @@ export class CoordinateHelper {
             }
         }
         return resultDegreeMinute;
+    }
+
+    static coordinateLatLngToUtm(latlng: LatLng): IUtm {
+        const { zoneNum, zoneLetter, easting, northing } = UtmLib.fromLatLon(latlng.latitude, latlng.longitude);
+        return {
+            zoneNumber: zoneNum,
+            zoneLetter,
+            easting: Number(easting.toFixed(3)),
+            northing: Number(northing.toFixed(3)),
+        }
+    }
+    static coordinateUtmToLatLng(utm: IUtm): LatLng {
+        const {latitude, longitude} = UtmLib.toLatLon(utm.easting, utm.northing, utm.zoneNumber, utm.zoneLetter);
+        return {
+            latitude: Number(latitude.toFixed(6)),
+            longitude: Number(longitude.toFixed(6)),
+        }
     }
 }
