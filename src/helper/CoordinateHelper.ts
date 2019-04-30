@@ -3,13 +3,12 @@ import { DegreeMinutes } from './../interfaces/coordinates/DegreeMinutes';
 import { Utm as IUtm } from '../interfaces/coordinates/Utm';
 
 import * as UtmLib from 'utm';
-
-const DM_COORDINATE_REGEX = "([NS]) ([0-9]+)°? ([0-9]+\.[0-9]+)'? ([EW]) ([0-9]+)°? ([0-9]+\.[0-9]+)'?";
+import { DM_REGEX} from './regex';
 
 export class CoordinateHelper {
 
     static parseDegreeMinute(coordinate: string) : DegreeMinutes | null {
-        let RE = new RegExp(DM_COORDINATE_REGEX, "g");
+        let RE = new RegExp(DM_REGEX, "g");
         let matchArray = RE.exec(coordinate);
         // console.log("matchArray", matchArray);
 
