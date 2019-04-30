@@ -8,8 +8,7 @@ import { DM_REGEX} from './regex';
 export class CoordinateHelper {
 
     static parseDegreeMinute(coordinate: string) : DegreeMinutes | null {
-        let RE = new RegExp(DM_REGEX, "g");
-        let matchArray = RE.exec(coordinate);
+        let matchArray = DM_REGEX.exec(coordinate);
         // console.log("matchArray", matchArray);
 
         //should only found once
