@@ -8,7 +8,7 @@
     "clean:dist": "rimraf dist/*",
     "test": "jest",
     "build": "npm run clean:dist && tsc -p ./ --outDir dist/",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run test && npm run build"
   },
   "author": "Sebastian Bejga",
   "license": "Apache-2.0",
