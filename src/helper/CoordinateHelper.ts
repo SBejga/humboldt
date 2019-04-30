@@ -7,6 +7,10 @@ import { DM_REGEX} from './regex';
 
 export class CoordinateHelper {
 
+    /**
+     * Parses a string to Degree-Minute coordinate format
+     * @param coordinate string to parse
+     */
     static parseDegreeMinute(coordinate: string) : DegreeMinutes | null {
         let matchArray = DM_REGEX.exec(coordinate);
         // console.log("matchArray", matchArray);
@@ -40,6 +44,10 @@ export class CoordinateHelper {
         return newDegreeMinutes;
     }
 
+    /**
+     * Validates a string in a Degree-Minute coordinate format
+     * @param coordinate string to validate
+     */
     static validateDegreeMinute(coordinate: string) : boolean {
         let dm = CoordinateHelper.parseDegreeMinute(coordinate);
 
@@ -75,6 +83,10 @@ export class CoordinateHelper {
         return true;
     }
 
+    /**
+     * Parses a string with Degree-Minutes (DM) and convert into LatLng coordinate format
+     * @param string to parse and convert
+     */
     static coordinateDmStringToLatLng(coordinate: string): LatLng | null {
         let dm = CoordinateHelper.parseDegreeMinute(coordinate);
         let validDm = CoordinateHelper.validateDegreeMinute(coordinate);
@@ -86,6 +98,10 @@ export class CoordinateHelper {
         return CoordinateHelper.coordinateDmToLatLng(dm);
     }
 
+    /**
+     * Converts Degree-Minutes (DM) to LatLng coordinate format
+     * @param dm coordinates to convert
+     */
     static coordinateDmToLatLng(dm: DegreeMinutes): LatLng {
         let latlng = {
             lat: {
@@ -116,6 +132,10 @@ export class CoordinateHelper {
         }
     }
 
+    /**
+     * Converts LatLng to Degree-Minutes (DM) coordinate format
+     * @param latlng coordinates to convert
+     */
     static coordinateLatLngToDm(latlng: LatLng) : DegreeMinutes {
         //get N/S by +/- of lat, E/W by +/- of lng
         let latHeading = latlng.latitude >= 0 ? "N" : "S";
@@ -148,6 +168,10 @@ export class CoordinateHelper {
         return resultDegreeMinute;
     }
 
+    /**
+     * Converts LatLng to UTM coordinate format
+     * @param latlng coordinates to convert
+     */
     static coordinateLatLngToUtm(latlng: LatLng): IUtm {
         const { zoneNum, zoneLetter, easting, northing } = UtmLib.fromLatLon(latlng.latitude, latlng.longitude);
         return {
@@ -157,6 +181,11 @@ export class CoordinateHelper {
             northing: Number(northing.toFixed(3)),
         }
     }
+
+    /**
+     * Converts UTM to LatLng coordinate format
+     * @param utm coordinates to convert
+     */
     static coordinateUtmToLatLng(utm: IUtm): LatLng {
         const {latitude, longitude} = UtmLib.toLatLon(utm.easting, utm.northing, utm.zoneNumber, utm.zoneLetter);
         return {
