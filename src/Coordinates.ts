@@ -13,7 +13,7 @@ export class Coordinates {
     // dms: DegreeMinuteSeconds;
     utm: Utm;
 
-    static fromDD(dd: LatLng) {
+    static fromDD(dd: LatLng): Coordinates {
         let coords = new Coordinates();
         // Init dd
         coords.dd = dd;
@@ -26,7 +26,7 @@ export class Coordinates {
         return coords;
     }
 
-    static fromDM(dm: DegreeMinutes) {
+    static fromDM(dm: DegreeMinutes): Coordinates {
         let coords = new Coordinates();
         // Init DM
         coords.dm = dm;
@@ -44,8 +44,16 @@ export class Coordinates {
     //     return coords;
     // }
 
-    // static fromUTM(utm: Utm) {
-    //     let coords = new Coordinates();
-    //     return coords;
-    // }
+    static fromUTM(utm: Utm): Coordinates {
+        let coords = new Coordinates();
+        // Init UTM
+        coords.utm = utm;
+
+        // Convert to DD
+        coords.dd = CoordinateHelper.coordinateUtmToLatLng(utm);
+        // Convert to DM
+        coords.dm = CoordinateHelper.coordinateLatLngToDm(coords.dd);
+
+        return coords;
+    }
 }
