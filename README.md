@@ -33,24 +33,41 @@ North and east have positive degrees. South and west will be negative. For examp
 
 ## Features
 
+### Coordinate Class
+
+initialize with LatLng, DM, UTM. Then all different formats accessable as properties.
+
+```
+Coordinates {
+    static fromDD(dd: LatLng): Coordinates;
+    static fromDM(dm: DegreeMinutes): Coordinates;
+    static fromUTM(utm: Utm): Coordinates;
+
+    dd: LatLng;
+    dm: DegreeMinutes;
+    utm: Utm;
+}
+```
+
 ### CoordinateHelper
 
-parse and validate geo coordinates in format degrees and minutes.
-Convert degrees and minutes to decimal degrees
+- parse and validate geo coordinates in string of DM format
+- Convert LatLng <=> DM
+- Convert LatLng <=> UTM
 
 ```js
 /*
-    "N 48° 08.233' E 011° 34.533'" 
+    "N 48° 08.233' E 011° 34.533'"
     =>
         {
             latitude: {
                 hemisphere: "N",
-                degree: 48, 
+                degree: 48,
                 minutes: 8.233
             },
             longitude: {
                 hemisphere: "E",
-                degree: 11, 
+                degree: 11,
                 minutes: 34.533
             }
         }
@@ -63,25 +80,47 @@ static parseDegreeMinute(coordinate: string) : DegreeMinute | null
 static validateDegreeMinute(coordinate: string) : boolean
 
 /*
-    "N 48° 08.233' E 011° 34.533'" => { latitude: 48.137217, longitude: 11.575550 } 
+    "N 48° 08.233' E 011° 34.533'" => { latitude: 48.137217, longitude: 11.575550 }
 */
 static coordinateDmStringToLatLng(coordinate: string): LatLng | null
 
 /*
-    { latitude: 48.137217, longitude: 11.575550 } 
+    { latitude: 48.137217, longitude: 11.575550 }
     =>
         {
             latitude: {
                 hemisphere: "N",
-                degree: 48, 
+                degree: 48,
                 minutes: 8.233
             },
             longitude: {
                 hemisphere: "E",
-                degree: 11, 
+                degree: 11,
                 minutes: 34.533
             }
         }
 */
 static coordinateLatLngToDm(latlng: LatLng) : DegreeMinute
+
+/*
+    { latitude: 48.137217, longitude: 11.575550 }
+    =>
+        {
+            zoneNumber: 32,
+            zoneLetter: 'U',
+            easting: 691607.433,
+            northing: 5334759.818
+        }
+*/
+static coordinateLatLngToUtm(latlng: LatLng): IUtm
+
+/*
+    { zoneNumber: 32, zoneLetter: 'U', easting: 691607.433, northing: 5334759.818 }
+    =>
+        {
+            latitude: 48.137217,
+            longitude: 11.575550
+        }
+*/
+static coordinateUtmToLatLng(utm: Utm): LatLng
 ```
