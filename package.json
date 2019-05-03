@@ -6,7 +6,8 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "clean:dist": "rimraf dist/*",
-    "test": "jest --coverage",
+    "test": "jest",
+    "codecov": "codecov",
     "build": "npm run clean:dist && tsc -p ./ --outDir dist/",
     "prepublishOnly": "npm run test && npm run build"
   },
@@ -20,6 +21,7 @@
     "@types/jest": "^24.0.12",
     "@types/node": "^8.0.2",
     "chai": "^4.0.2",
+    "codecov": "^3.3.0",
     "istanbul": "^0.4.5",
     "jest": "^24.7.1",
     "rimraf": "^2.6.1",
