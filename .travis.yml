@@ -4,7 +4,9 @@ node_js:
   - "9"
   - "10"
   - "11"
-scripts:
+install:
   - npm install -g codecov
+script:
+  - npm run test
 after_success:
   - codecov
