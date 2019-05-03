@@ -6,8 +6,6 @@ import { DegreeMinuteSeconds } from '../interfaces/coordinates/DegreeMinuteSecon
 
 interface AllCoordinateFormats {
     dm_string: string,
-    dm_string_nounits: string,
-    dm_string_nozeros: string,
     dd: LatLng,
     dms: DegreeMinuteSeconds,
     utm: Utm,
@@ -19,8 +17,6 @@ type TestLocations = { [id: string]: AllCoordinateFormats };
 const testCoords: TestLocations = {
     munich: {
         dm_string: "N 48° 08.233' E 011° 34.533'",
-        dm_string_nounits: "N 48 08.233 E 011 34.533",
-        dm_string_nozeros: "N 48° 8.233' E 11° 34.533'",
         dms: {
             latitude: {hemisphere: 'N', degree: 48, minutes: 8, seconds: 13.98},
             longitude: {hemisphere: 'E',degree: 11, minutes: 34, seconds: 31.98}
@@ -30,8 +26,6 @@ const testCoords: TestLocations = {
     },
     rio: {
         dm_string: "S 22° 54.500' W 043° 11.783'",
-        dm_string_nounits: "S 22 54.500 W 043 11.783",
-        dm_string_nozeros: "S 22° 54.500' W 43° 011.783'",
         dd: {latitude: -22.908333, longitude: -43.196383},
         dms: {
             latitude: {hemisphere: 'S', degree: 22, minutes: 54, seconds: 30.00},
@@ -42,15 +36,62 @@ const testCoords: TestLocations = {
 }
 
 describe('validate DM', () => {
-    const keys = Object.keys(testCoords);
-    for (let key of keys) {
-        it(key, () => {
-            const coords = testCoords[key];
-            chai.expect(CoordinateHelper.validateDegreeMinute(coords.dm_string)).to.be.true;
-            chai.expect(CoordinateHelper.validateDegreeMinute(coords.dm_string_nounits)).to.be.true;
-            chai.expect(CoordinateHelper.validateDegreeMinute(coords.dm_string_nozeros)).to.be.true;
-        });
-    }
+
+    it('full format', () => {
+        const coords = [
+            "N 48° 08.233' E 011° 34.533'",
+            "S 22° 54.500' W 043° 11.783'"
+        ];
+        for (let coord of coords) {
+            chai.expect(CoordinateHelper.validateDegreeMinute(coord)).to.be.true;
+        }
+    });
+
+    it('without leading zeros', () => {
+        const coords = [
+            "N 48° 8.233' E 11° 34.533'",
+            "S 22° 54.500' W 43° 011.783'"
+        ];
+        for (let coord of coords) {
+            chai.expect(CoordinateHelper.validateDegreeMinute(coord)).to.be.true;
+        }
+    });
+
+    it('without units', () => {
+        const coords = [
+            "N 48 08.233 E 011 34.533",
+            "S 22 54.500 W 043 11.783"
+        ];
+        for (let coord of coords) {
+            chai.expect(CoordinateHelper.validateDegreeMinute(coord)).to.be.true;
+        }
+    })
+
+    it('invalid compass signs', () => {
+        const coords = [
+            "X 48 08.233 E 011 34.533",
+            "N 22 54.500 Y 043 11.783"
+        ];
+        for (let coord of coords) {
+            chai.expect(CoordinateHelper.validateDegreeMinute(coord)).to.be.false;
+        }
+    })
+
+    it('invalid number ranges', () => {
+        const coords = [
+            "N 91 08.233 E 011 34.533",
+            "N 0 08.233 E 181 34.533",
+            "S 22 61.500 W 043 11.783",
+            "S 22 59.500 W 043 61.783",
+        ];
+        for (let coord of coords) {
+            chai.expect(CoordinateHelper.validateDegreeMinute(coord)).to.be.false;
+        }
+    })
+
+    it('can not parse', () => {
+        chai.expect(CoordinateHelper.coordinateDmStringToLatLng("abc")).equal(null);
+    })
 });
 
 describe('convert DM to LatLng', () => {

@@ -57,14 +57,6 @@ export class CoordinateHelper {
             return false;
         }
 
-        // N, S, E or W
-        if (dm.latitude.hemisphere !== "N" && dm.latitude.hemisphere !== "S") {
-            return false;
-        }
-        if (dm.longitude.hemisphere !== "E" && dm.longitude.hemisphere !== "W") {
-            return false;
-        }
-
         //Degrees 0 <= x <= 90 or 180
         if (dm.latitude.degree < 0 || dm.latitude.degree > 90) {
             return false;
