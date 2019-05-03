@@ -2,12 +2,14 @@ import { LatLng } from '../interfaces/coordinates/LatLng';
 import * as chai from "chai";
 import { CoordinateHelper } from '../helper/CoordinateHelper';
 import { Utm } from '../interfaces/coordinates/Utm';
+import { DegreeMinuteSeconds } from '../interfaces/coordinates/DegreeMinuteSeconds';
 
 interface AllCoordinateFormats {
     dm_string: string,
     dm_string_nounits: string,
     dm_string_nozeros: string,
     dd: LatLng,
+    dms: DegreeMinuteSeconds,
     utm: Utm,
 }
 
@@ -19,6 +21,10 @@ const testCoords: TestLocations = {
         dm_string: "N 48° 08.233' E 011° 34.533'",
         dm_string_nounits: "N 48 08.233 E 011 34.533",
         dm_string_nozeros: "N 48° 8.233' E 11° 34.533'",
+        dms: {
+            latitude: {hemisphere: 'N', degree: 48, minutes: 8, seconds: 13.98},
+            longitude: {hemisphere: 'E',degree: 11, minutes: 34, seconds: 31.98}
+        },
         dd: {latitude: 48.137217, longitude: 11.57555},
         utm: { zoneNumber: 32, zoneLetter: 'U', easting: 691607.433, northing: 5334759.818 },
     },
@@ -27,6 +33,10 @@ const testCoords: TestLocations = {
         dm_string_nounits: "S 22 54.500 W 043 11.783",
         dm_string_nozeros: "S 22° 54.500' W 43° 011.783'",
         dd: {latitude: -22.908333, longitude: -43.196383},
+        dms: {
+            latitude: {hemisphere: 'S', degree: 22, minutes: 54, seconds: 30.00},
+            longitude: {hemisphere: 'W',degree: 43, minutes: 11, seconds: 46.98}
+        },
         utm: { zoneNumber: 23, zoneLetter: 'K', easting: 684983.441, northing: 7465494.088 },
     }
 }
@@ -79,6 +89,38 @@ describe('convert LatLng to DM', () => {
         chai.expect(backToDm.longitude.degree).to.equal(43);
         chai.expect(backToDm.longitude.minutes).to.equal(11.783);
     })
+});
+
+describe('convert DMS to LatLng', () => {
+    const keys = Object.keys(testCoords);
+    for (let key of keys) {
+        it(key, () => {
+            const coords = testCoords[key];
+            let dmsToLatLng = CoordinateHelper.coordinateDmsToLatLng(coords.dms) as LatLng;
+            chai.expect(dmsToLatLng).to.be.not.null;
+            chai.expect(dmsToLatLng.latitude).to.equal(coords.dd.latitude);
+            chai.expect(dmsToLatLng.longitude).to.equal(coords.dd.longitude);
+        });
+    }
+});
+
+describe('convert LatLng to DMS', () => {
+    const keys = Object.keys(testCoords);
+    for (let key of keys) {
+        it(key, () => {
+            const coords = testCoords[key];
+            let backToDms = CoordinateHelper.coordinateLatLngToDms(coords.dd);
+            chai.expect(backToDms).to.be.not.null;
+            chai.expect(backToDms.latitude.hemisphere).to.equal(coords.dms.latitude.hemisphere);
+            chai.expect(backToDms.latitude.degree).to.equal(coords.dms.latitude.degree);
+            chai.expect(backToDms.latitude.minutes).to.equal(coords.dms.latitude.minutes);
+            chai.expect(backToDms.latitude.seconds).to.equal(coords.dms.latitude.seconds);
+            chai.expect(backToDms.longitude.hemisphere).to.equal(coords.dms.longitude.hemisphere);
+            chai.expect(backToDms.longitude.degree).to.equal(coords.dms.longitude.degree);
+            chai.expect(backToDms.longitude.minutes).to.equal(coords.dms.longitude.minutes);
+            chai.expect(backToDms.longitude.seconds).to.equal(coords.dms.longitude.seconds);
+        });
+    }
 });
 
 describe('convert LatLng to UTM', () => {

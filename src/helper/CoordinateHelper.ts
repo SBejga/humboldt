@@ -3,6 +3,7 @@ import { DegreeMinutes } from './../interfaces/coordinates/DegreeMinutes';
 import { Utm as IUtm } from '../interfaces/coordinates/Utm';
 
 import * as UtmLib from 'utm';
+import { DegreeMinuteSeconds } from '../interfaces/coordinates/DegreeMinuteSeconds';
 import { DM_REGEX} from './regex';
 
 export class CoordinateHelper {
@@ -86,6 +87,7 @@ export class CoordinateHelper {
     /**
      * Parses a string with Degree-Minutes (DM) and convert into LatLng coordinate format
      * @param string to parse and convert
+     * @returns latlng decimals fixed to 6 digits
      */
     static coordinateDmStringToLatLng(coordinate: string): LatLng | null {
         let dm = CoordinateHelper.parseDegreeMinute(coordinate);
@@ -101,6 +103,7 @@ export class CoordinateHelper {
     /**
      * Converts Degree-Minutes (DM) to LatLng coordinate format
      * @param dm coordinates to convert
+     * @returns latlng decimals fixed to 6 digits
      */
     static coordinateDmToLatLng(dm: DegreeMinutes): LatLng {
         let latlng = {
@@ -169,6 +172,80 @@ export class CoordinateHelper {
     }
 
     /**
+     * Converts Degree-Minute-Seconds (DMS) to LatLng coordinate format
+     * @param dms coordinates to convert
+     * @returns latlng decimals fixed to 6 digits
+     */
+    static coordinateDmsToLatLng(dms: DegreeMinuteSeconds): LatLng {
+
+        //Calculate to DDD.DDDDDD
+        let lat = dms.latitude.degree + dms.latitude.minutes / 60 + dms.latitude.seconds / 60 / 60;
+        let lng = dms.longitude.degree + dms.longitude.minutes / 60 + dms.longitude.seconds / 60 / 60;
+
+        //change to negative if S or W
+        if (dms.latitude.hemisphere === "S") {
+            lat *= -1;
+        }
+        if (dms.longitude.hemisphere === "W") {
+            lng *= -1;
+        }
+
+        return {
+            latitude: Number(lat.toFixed(6)),
+            longitude: Number(lng.toFixed(6))
+        }
+    }
+
+    /**
+     * Converts LatLng to Degree-Minute-Seconds (DMS) coordinate format
+     * @param latlng coordinates to convert
+     */
+    static coordinateLatLngToDms(latlng: LatLng) : DegreeMinuteSeconds {
+        //get N/S by +/- of lat, E/W by +/- of lng
+        let latHeading = latlng.latitude >= 0 ? "N" : "S";
+        let lngHeading = latlng.longitude >= 0 ? "E" : "W";
+
+        let absLat = Math.abs(latlng.latitude);
+        let absLng = Math.abs(latlng.longitude);
+
+        //get integer without float and ignore negative
+        let latDegree = Math.floor(absLat);
+        let lngDegree = Math.floor(absLng);
+
+        //calc minutes
+        // with decimals parts which is decimal seconds
+        let latDecimalMinutes = 60 * (absLat - latDegree);
+        let lngDecimalMinutes = 60 * (absLng - lngDegree);
+        // only whole part
+        let latMinutes = Math.floor(latDecimalMinutes);
+        let lngMinutes = Math.floor(lngDecimalMinutes);
+
+        //calc seconds
+        let latSeconds = 60 * (latDecimalMinutes - latMinutes);
+        let lngSeconds = 60 * (lngDecimalMinutes - lngMinutes);
+
+        //max 2 float digits of seconds
+        let latSecondsFixed = Number(latSeconds.toFixed(2));
+        let lngSecondsFixed = Number(lngSeconds.toFixed(2));
+
+        let resultDegreeMinuteSeconds : DegreeMinuteSeconds = {
+            latitude: {
+                hemisphere: latHeading,
+                degree: latDegree,
+                minutes: latMinutes,
+                seconds: latSecondsFixed,
+            },
+            longitude: {
+                hemisphere: lngHeading,
+                degree: lngDegree,
+                minutes: Math.floor(lngMinutes),
+                seconds: lngSecondsFixed,
+            }
+        }
+        return resultDegreeMinuteSeconds;
+    }
+
+    /**
      * Converts LatLng to UTM coordinate format
      * @param latlng coordinates to convert
      */
@@ -185,6 +262,7 @@ export class CoordinateHelper {
     /**
      * Converts UTM to LatLng coordinate format
      * @param utm coordinates to convert
+     * @returns latlng decimals fixed to 6 digits
      */
     static coordinateUtmToLatLng(utm: IUtm): LatLng {
         const {latitude, longitude} = UtmLib.toLatLon(utm.easting, utm.northing, utm.zoneNumber, utm.zoneLetter);

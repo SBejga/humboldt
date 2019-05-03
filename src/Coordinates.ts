@@ -10,7 +10,7 @@ export class Coordinates {
 
     dd: LatLng;
     dm: DegreeMinutes;
-    // dms: DegreeMinuteSeconds;
+    dms: DegreeMinuteSeconds;
     utm: Utm;
 
     static fromDD(dd: LatLng): Coordinates {
@@ -20,6 +20,8 @@ export class Coordinates {
 
         // Convert to DM
         coords.dm = CoordinateHelper.coordinateLatLngToDm(dd);
+        // Convert to DMS
+        coords.dms = CoordinateHelper.coordinateLatLngToDms(dd);
         // Convert to UTM
         coords.utm = CoordinateHelper.coordinateLatLngToUtm(dd);
 
@@ -33,16 +35,27 @@ export class Coordinates {
 
         // Convert to DD
         coords.dd = CoordinateHelper.coordinateDmToLatLng(dm);
+        // Convert to DMS
+        coords.dms = CoordinateHelper.coordinateLatLngToDms(coords.dd);
         // Convert to UTM
         coords.utm = CoordinateHelper.coordinateLatLngToUtm(coords.dd);
 
         return coords;
     }
 
-    // static fromDMS(dms: DegreeMinuteSeconds) {
-    //     let coords = new Coordinates();
-    //     return coords;
-    // }
+    static fromDMS(dms: DegreeMinuteSeconds) {
+        let coords = new Coordinates();
+        // Init DMS
+        coords.dms = dms;
+
+        // Convert to DD
+        coords.dd = CoordinateHelper.coordinateDmsToLatLng(dms);
+        // Convert to DM
+        coords.dm = CoordinateHelper.coordinateLatLngToDm(coords.dd);
+        // Convert to UTM
+        coords.utm = CoordinateHelper.coordinateLatLngToUtm(coords.dd);
+        return coords;
+    }
 
     static fromUTM(utm: Utm): Coordinates {
         let coords = new Coordinates();
@@ -53,6 +66,8 @@ export class Coordinates {
         coords.dd = CoordinateHelper.coordinateUtmToLatLng(utm);
         // Convert to DM
         coords.dm = CoordinateHelper.coordinateLatLngToDm(coords.dd);
+        // Convert to DMS
+        coords.dms = CoordinateHelper.coordinateLatLngToDms(coords.dd);
 
         return coords;
     }
