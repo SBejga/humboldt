@@ -1,6 +1,7 @@
 # Humboldt 🗺🤵🏻
 
 [![Build Status](https://travis-ci.org/SBejga/humboldt.svg?branch=master)](https://travis-ci.org/SBejga/humboldt) [![npm version](https://badge.fury.io/js/humboldt.svg)](https://badge.fury.io/js/humboldt)
+[![codecov](https://codecov.io/gh/SBejga/humboldt/branch/master/graph/badge.svg)](https://codecov.io/gh/SBejga/humboldt)
 
 some common tools for map. Convert coordinates etc.
 
