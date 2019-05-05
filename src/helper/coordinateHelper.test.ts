@@ -162,6 +162,15 @@ describe('convert LatLng to DMS', () => {
             chai.expect(backToDms.longitude.seconds).to.equal(coords.dms.longitude.seconds);
         });
     }
+
+    it('should get rid of round issue', () => {
+        let dms = CoordinateHelper.coordinateLatLngToDms({latitude: 47.9, longitude: 11.5});
+        chai.expect(dms).to.be.not.null;
+        chai.expect(dms.latitude.degree).equal(47);
+        chai.expect(dms.latitude.minutes).equal(54);
+        chai.expect(dms.longitude.degree).equal(11);
+        chai.expect(dms.longitude.minutes).equal(30);
+    })
 });
 
 describe('convert LatLng to UTM', () => {

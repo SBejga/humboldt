@@ -209,8 +209,8 @@ export class CoordinateHelper {
         let latDecimalMinutes = 60 * (absLat - latDegree);
         let lngDecimalMinutes = 60 * (absLng - lngDegree);
         // only whole part
-        let latMinutes = Math.floor(latDecimalMinutes);
-        let lngMinutes = Math.floor(lngDecimalMinutes);
+        let latMinutes = Math.floor(Number(latDecimalMinutes.toFixed(4)));
+        let lngMinutes = Math.floor(Number(lngDecimalMinutes.toFixed(4)));
 
         //calc seconds
         let latSeconds = 60 * (latDecimalMinutes - latMinutes);
